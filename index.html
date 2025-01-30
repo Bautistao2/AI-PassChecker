@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <style>
+        .strength-bar {
+            height: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+        }
+        .strength-bar div {
+            height: 100%;
+            border-radius: 5px;
+        }
+        .strength-weak {
+            width: 33%;
+            background-color: red;
+        }
+        .strength-moderate {
+            width: 66%;
+            background-color: yellow;
+        }
+        .strength-strong {
+            width: 100%;
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title has-text-centered">Password Strength Checker</h1>
+
+            <!-- Input Form -->
+            <div class="box">
+                <div class="field">
+                    <label class="label">Enter Password</label>
+                    <div class="control">
+                        <input id="password" class="input" type="password" placeholder="Enter your password here">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <button id="checkStrength" class="button is-primary is-fullwidth">Check Strength</button>
+                    </div>
+                </div>
+
+                <!-- Result Display -->
+                <div id="result" class="notification is-hidden"></div>
+
+                <!-- Strength Bar -->
+                <div class="strength-bar">
+                    <div id="strengthBar"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById('checkStrength').addEventListener('click', async () => {
+            // Get the password from the input field
+            const password = document.getElementById('password').value;
+
+            // Clear the result notification and reset the strength bar
+            const resultDiv = document.getElementById('result');
+            const strengthBar = document.getElementById('strengthBar');
+            resultDiv.classList.add('is-hidden');
+            strengthBar.className = '';
+
+            // Validate the input
+            if (!password) {
+                resultDiv.textContent = 'Please enter a password!';
+                resultDiv.className = 'notification is-danger';
+                resultDiv.classList.remove('is-hidden');
+                return;
+            }
+
+            try {
+                // Send the password to the backend
+                const response = await fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+
+                // Parse the JSON response
+                const data = await response.json();
+
+                // Display the result
+                resultDiv.textContent = `Password Strength: ${data.strength}`;
+
+                if (data.strength === 'Weak') {
+                    resultDiv.className = 'notification is-danger';
+                    strengthBar.className = 'strength-bar strength-weak';
+                } else if (data.strength === 'Moderate') {
+                    resultDiv.className = 'notification is-warning';
+                    strengthBar.className = 'strength-bar strength-moderate';
+                } else {
+                    resultDiv.className = 'notification is-success';
+                    strengthBar.className = 'strength-bar strength-strong';
+                }
+
+                resultDiv.classList.remove('is-hidden');
+            } catch (error) {
+                resultDiv.textContent = 'Error connecting to the server. Please try again.';
+                resultDiv.className = 'notification is-danger';
+                resultDiv.classList.remove('is-hidden');
+            }
+        });
+    </script>
+</body>
+</html>
