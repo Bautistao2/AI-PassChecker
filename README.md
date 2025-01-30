@@ -40,7 +40,7 @@ Before starting, make sure you have the following installed:
 ### 1️⃣ Clone the Repository
 ```bash
 https://github.combautistao2/IA-PassChecker.git
-cd password-strength-checker
+cd IA-PassChecker
 ```
 
 ### 2️⃣ Create a Virtual Environment
@@ -91,9 +91,18 @@ password-strength-checker/
 ## 🤝 Contributing
 We welcome contributions! 🛠️ If you find bugs or have ideas for improvements, feel free to open an **issue** or submit a **pull request**.
 
+## **📧 Contact**
+For questions, feedback, or collaboration, feel free to reach out:
+- **Name**:  Ilyd Bautista
+- **Email**: bautistaosta1@gmail.com
+- **GitHub**: [ GitHub Profile](https://github.com/Bautistao2)
+- **LinkedIn**: [LinkedIn Profile](https://linkedin.com/in/bautita1)
+
+
 ---
 ## 📝 License
 This project is licensed under the **MIT License** [license.txt]📄.
 
 💡 *Happy coding!* 🎉
+
 
